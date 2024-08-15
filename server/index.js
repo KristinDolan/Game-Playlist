@@ -16,6 +16,8 @@ const startServer = async() => {
 }
 startServer();
 
+// matches any url for a GET request to a possible file in the pub directory
+app.use(express.static(__dirname + '/public'))
 
 // start of middleware
 app.use(express.json());

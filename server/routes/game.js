@@ -6,8 +6,41 @@ module.exports = router;
 const { Game, Genre } = require('../db');
 
 // GET /games
-router.get("/", (req, res) => {
-    res.send("This is my game list!")
+router.get("/", async (req, res, next) => {
+    try {
+        const games = await Game.findAll({
+            include: [Genre],
+            order: [
+                ["my_rating", "DESC"]
+            ]
+        })
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+                <head><title>Game List</title></head>
+                <body>
+                    <h1>My Games</h1>
+                    <ul>
+                        ${games.map((game) => {
+                            return `
+                                <li>
+                                    <h2>${game.title}</h2>
+                                    <ul>My Score: ${game.my_rating}</ul>
+                                    <ul>
+                                        ${game.genres.map(genre => {
+                                            return `<li>${genre.name}</li>`
+                                        }).join("")}
+                                    </ul>
+                                </li>
+                            `
+                        }).join("")}
+                    </ul>
+                </body>
+            </html>
+        `)
+    } catch (e) {
+        next(e)
+    }
 })
 
 // GET /games/add-game
@@ -31,14 +64,17 @@ router.get("/add-game", async (req, res) => {
                         </label>
                     </div>
                     <div>
-                        <select name='genres'>
-                            <option></option>
-                            ${
-                                allMyGenres.map(genre => {
-                                    return `<option value="${genre.id}">${genre.name}</option>`
-                                })
-                            }
-                        </select>
+                        <div id='genre-select-container'>
+                            <select id='genre-select' name='genres'>
+                                <option></option>
+                                ${
+                                    allMyGenres.map(genre => {
+                                        return `<option value="${genre.id}">${genre.name}</option>`
+                                    }).join('')
+                                }
+                            </select>
+                        </div>
+                        <button type='button' id='add-genre'>+</button>
                     </div>
                     <div>
                         <label>Played?
@@ -58,6 +94,7 @@ router.get("/add-game", async (req, res) => {
                     <button type="submit">Add Game</button>
                 </form>
             </body>
+            <script type='text/javascript' src='/game-form.js'></script>
         </html>
     `)
 })

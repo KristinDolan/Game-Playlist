@@ -4,8 +4,6 @@ const dbConnection = new Sequelize(
     "postgres://postgres:Frostine.13@localhost:5432/gamesplaylist"
 );
 
-module.exports = dbConnection;
-
 /*
 MODELS:
 
@@ -31,11 +29,11 @@ const Game = dbConnection.define('game', {
         }
     },
     my_rating: {
-        type: Sequelize.DataTypes.NUMBER,
+        type: Sequelize.DataTypes.INTEGER,
         allowNull: true
     },
     ign_rating: {
-        type: Sequelize.DataTypes.NUMBER,
+        type: Sequelize.DataTypes.INTEGER,
         allowNull: true
     },
     ign_review: {
@@ -58,3 +56,9 @@ const Genre = dbConnection.define("genre", {
 
 Game.belongsToMany(Genre, { through: "game_genres" });
 Genre.belongsToMany(Game, { through: "game_genres" });
+
+module.exports =  {
+    dbConnection,
+    Game,
+    Genre
+};

@@ -55,3 +55,6 @@ const Genre = dbConnection.define("genre", {
         allowNull: false
     }
 })
+
+Game.belongsToMany(Genre, { through: "game_genres" });
+Genre.belongsToMany(Game, { through: "game_genres" });

@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const genresRouter = require('./routes/genre');
+const gamesRouter = require('./routes/game')
 
 const PORT = 8080;
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/genre', genresRouter);
+app.use('/games', gamesRouter);
 
 app.get("/", (req, res) => {
     res.send("Hello :)");

@@ -36,10 +36,6 @@ const Game = dbConnection.define('game', {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true
     },
-    ign_review: {
-        type: Sequelize.DataTypes.STRING(255),
-        allowNull: true
-    },
     played: {
         type: Sequelize.DataTypes.BOOLEAN,
         allowNull: false,
@@ -54,7 +50,7 @@ const Genre = dbConnection.define("genre", {
     }
 })
 
-Game.belongsToMany(Genre, { through: "game_genres" });
+Game.belongsToMany(Genre, { through: "game_genres" }); //set_genres
 Genre.belongsToMany(Game, { through: "game_genres" });
 
 module.exports =  {

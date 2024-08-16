@@ -18,12 +18,13 @@ router.get("/", async (req, res, next) => {
             <!DOCTYPE html>
             <html>
                 <head><title>Game List</title></head>
+                <link rel='stylesheet' type='text/css' href='/game-list-style.css' />
                 <body>
                     <h1>My Games</h1>
                     <ul>
                         ${games.map((game) => {
                             return `
-                                <li>
+                                <li class="${game.played === true ? 'played' : ''}">
                                     <h2>${game.title}</h2>
                                     <ul>My Score: ${game.my_rating}</ul>
                                     <ul>
@@ -31,6 +32,7 @@ router.get("/", async (req, res, next) => {
                                             return `<li>${genre.name}</li>`
                                         }).join("")}
                                     </ul>
+                                    ${game.played === false ? `<a href='/games/${game.id}/mark-played'>I've played this now!</a>` : ''}
                                 </li>
                             `
                         }).join("")}
@@ -97,6 +99,22 @@ router.get("/add-game", async (req, res) => {
             <script type='text/javascript' src='/game-form.js'></script>
         </html>
     `)
+})
+
+router.get('/:gameId/mark-played', async (req, res, next) => {
+    const id = req.params.gameId;
+    try {
+        const theGame = await Game.findByPk(id);
+        if (!theGame) {
+            res.status(404).send('No movie with that id');
+        }
+        theGame.played = true;
+        await theGame.save();
+
+        res.redirect('/games')
+    } catch (e) {
+        next(e)
+    }
 })
 
 // POST /games

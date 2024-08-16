@@ -7,20 +7,55 @@ const { Game, Genre } = require('../db');
 
 // GET /games
 router.get("/", async (req, res, next) => {
+    const onlyPlayed = req.query.isplayed === '1';
+    const whereClause = {};
+    const genreName = req.query.genre;
+
+    if (onlyPlayed === true) {
+        whereClause.played = false;
+    }
+
     try {
-        const games = await Game.findAll({
-            include: [Genre],
-            order: [
-                ["my_rating", "DESC"]
-            ]
-        })
+        let games;
+        if (genreName) {
+            const specificGenre = await Genre.findOne({
+                where: {
+                    name: genreName
+                }
+            });
+            if (!specificGenre) {
+                res.status(404).send('Unknown Genre');
+                return;
+            }
+            games = await specificGenre.getGames({
+                include: [Genre],
+                order: [
+                    ["my_rating", "DESC"]
+                ],
+                where: whereClause
+            })
+        } else {
+            games = await Game.findAll({
+                include: [Genre],
+                order: [
+                    ["my_rating", "DESC"]
+                ],
+                where: whereClause
+            })
+        }
+
+        
         res.send(`
             <!DOCTYPE html>
             <html>
                 <head><title>Game List</title></head>
                 <link rel='stylesheet' type='text/css' href='/game-list-style.css' />
                 <body>
-                    <h1>My Games</h1>
+                    <h1>My Games List</h1>
+                    <nav>
+                        <a href='/games'>All</a> </br>
+                        <a href='/games?isplayed=1'>Not Played</a>
+                    </nav>
                     <ul>
                         ${games.map((game) => {
                             return `
@@ -29,10 +64,10 @@ router.get("/", async (req, res, next) => {
                                     <ul>My Score: ${game.my_rating}</ul>
                                     <ul>
                                         ${game.genres.map(genre => {
-                                            return `<li>${genre.name}</li>`
+                                            return `<li><a href='/games?genre=${genre.name}'>${genre.name}</a></li>`
                                         }).join("")}
                                     </ul>
-                                    ${game.played === false ? `<a href='/games/${game.id}/mark-played'>I've played this now!</a>` : ''}
+                                    ${game.played === false ? `<a href='/games/${game.id}/mark-played'>Mark as Played</a>` : ''}
                                 </li>
                             `
                         }).join("")}
@@ -107,6 +142,7 @@ router.get('/:gameId/mark-played', async (req, res, next) => {
         const theGame = await Game.findByPk(id);
         if (!theGame) {
             res.status(404).send('No movie with that id');
+            return;
         }
         theGame.played = true;
         await theGame.save();

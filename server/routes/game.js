@@ -54,7 +54,10 @@ router.get("/", async (req, res, next) => {
                     <h1>My Games List</h1>
                     <nav>
                         <a href='/games'>All</a> </br>
-                        <a href='/games?isplayed=1'>Not Played</a>
+                        <a href='/games/what-play'>What Should I Play?</a> </br>
+                        <a href='/games/what-play/new'>Find A New Game</a> </br>
+                        <a href='/games?isplayed=1'>Want to Play</a> </br>
+                        <a href='/games/add-game'>Add Game</a> </br>
                     </nav>
                     <ul>
                         ${games.map((game) => {
@@ -78,6 +81,42 @@ router.get("/", async (req, res, next) => {
     } catch (e) {
         next(e)
     }
+})
+
+// GET /games/what-play/new
+router.get('/what-play/new', async (req, res, next) => {
+
+    try {
+        const allUnplayedGames = await Game.findAll({
+            where: {
+                played: false
+            }
+        });
+        const amountOfUnplayed = allUnplayedGames.length;
+        const randomNum = Math.floor(Math.random() * amountOfUnplayed);
+        const winner = allUnplayedGames[randomNum];
+        res.send (`
+            <!DOCTYPE html>
+            <html>
+                <head><title>Play Me Now!</title></head>
+                <body>
+                    <h1>You should play ${winner.title}!</h1>
+                    <a href='/games'>Take Me Home</a>
+                    <a href='/games/what-play/new'>Try Again</a>
+                </body>
+            </html>    
+        `)
+    } catch (e) {
+        next(e)
+    }
+
+})
+
+// GET /games/what-play
+router.get('/what-play', async (req, res, next) => {
+
+
+
 })
 
 // GET /games/add-game

@@ -2,6 +2,38 @@
     background: skyblue;
 }
 
-h2 {
+nav a {
+    margin-left: 5px;
+}
+
+a {
+    font-weight: bold;
+    color: black;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#list-of-games > li {
+    background: rgba(0, 0, 0, 0.2);
+    width: 90%;
+    padding: 5px 20px;
+    margin-bottom: 20px;
+}
+
+#list-of-games > li h2 {
+    margin-top: 0;
     font-style: oblique;
+    margin-bottom: 10px;
+}
+
+.genres-list {
+    width: 400px;
+    display: flex;
+}
+
+.genres-list li {
+    margin-right: 20px;
 }

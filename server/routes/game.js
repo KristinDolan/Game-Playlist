@@ -49,6 +49,7 @@ router.get("/", async (req, res, next) => {
             <!DOCTYPE html>
             <html>
                 <head><title>Game List</title></head>
+                <link rel='stylesheet' type='text/css' href='/base-styling.css' />
                 <link rel='stylesheet' type='text/css' href='/game-list-style.css' />
                 <body>
                     <h1>My Games List</h1>
@@ -59,17 +60,17 @@ router.get("/", async (req, res, next) => {
                         <a href='/games?isplayed=1'>Want to Play</a> </br>
                         <a href='/games/add-game'>Add Game</a> </br>
                     </nav>
-                    <ul>
+                    <ul id='list-of-games'>
                         ${games.map((game) => {
                             return `
                                 <li class="${game.played === true ? 'played' : ''}">
                                     <h2>${game.title}</h2>
-                                    <ul>My Score: ${game.my_rating}</ul>
-                                    <ul>
+                                    <ul class='genres-list'>
                                         ${game.genres.map(genre => {
                                             return `<li><a href='/games?genre=${genre.name}'>${genre.name}</a></li>`
                                         }).join("")}
                                     </ul>
+                                    <ul>My Score: ${game.my_rating}</ul>
                                     ${game.played === false ? `<a href='/games/${game.id}/mark-played'>Mark as Played</a>` : ''}
                                 </li>
                             `
@@ -98,7 +99,9 @@ router.get('/what-play/new', async (req, res, next) => {
         res.send (`
             <!DOCTYPE html>
             <html>
-                <head><title>Play Me Now!</title></head>
+                <head>
+                    <title>Play Me Now!</title>
+                    <link rel='stylesheet' type='text/css' href='/base-styling.css' /></head>
                 <body>
                     <h1>You should play ${winner.title}!</h1>
                     <a href='/games'>Take Me Home</a>
@@ -130,6 +133,7 @@ router.get("/add-game", async (req, res) => {
         <html lang='en'>
             <head>
                 <title>Add Game</title>
+                <link rel='stylesheet' type='text/css' href='/base-styling.css' />
             </head>
             <body>
                 <h1>Add a Game to Your Playlist</h1>
@@ -159,12 +163,12 @@ router.get("/add-game", async (req, res) => {
                     </div>
                     <div>
                         <label>My Rating
-                            <input type='number' name='my_rating' />
+                            <input type='text' name='my_rating' />
                         </label>
                     </div>
                     <div>
                         <label>IGN Rating
-                            <input type='number' name='ign_rating' />
+                            <input type='text' name='ign_rating' />
                         </label>
                     </div>
                     <button type="submit">Add Game</button>

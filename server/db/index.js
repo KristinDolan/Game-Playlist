@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 const dbConnection = new Sequelize(
-    "postgres://postgres:Frostine.13@localhost:5432/gamesplaylist"
+    "postgres://kristinslaptop:Frostine.13@localhost:5432/gamesplaylist"
 );
 
 /*
@@ -29,11 +29,11 @@ const Game = dbConnection.define('game', {
         }
     },
     my_rating: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.DataTypes.STRING(5),
         allowNull: true
     },
     ign_rating: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.DataTypes.STRING(5),
         allowNull: true
     },
     played: {

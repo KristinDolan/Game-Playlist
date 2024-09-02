@@ -27,5 +27,16 @@ app.use('/genre', genresRouter);
 app.use('/games', gamesRouter);
 
 app.get("/", (req, res) => {
-    res.send("Hello :)");
+    res.send(`
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Games Review App</title>
+            </head>
+            <body>
+                <div id='react-app-here'></div>
+                <script src='/bundle.js'</script>
+            </body>
+        </html>
+    `);
 })

@@ -1,5 +1,5 @@
 {
-  "name": "games_playlist",
+  "name": "gameslist",
   "version": "1.0.0",
   "description": "Site to list games played and reviews",
   "main": "index.js",

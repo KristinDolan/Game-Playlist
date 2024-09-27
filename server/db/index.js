@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 const dbConnection = new Sequelize(
-    "postgres://kristinslaptop:Frostine.13@localhost:5432/gamesplaylist"
+    "postgres://kristinslaptop:Frostine.13@localhost:5432/gameslist"
 );
 
 /*
@@ -22,6 +22,13 @@ MODELS:
 
 const Game = dbConnection.define('game', {
     title: {
+        type: Sequelize.DataTypes.STRING(255),
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    system: {
         type: Sequelize.DataTypes.STRING(255),
         allowNull: false,
         validate: {

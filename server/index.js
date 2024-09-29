@@ -17,7 +17,7 @@ const startServer = async() => {
 startServer();
 
 // matches any url for a GET request to a possible file in the pub directory
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 
 // start of middleware
 app.use(express.json());
@@ -32,10 +32,12 @@ app.get("/", (req, res) => {
         <html>
             <head>
                 <title>Games Review App</title>
+                <link rel="stylesheet" type="text/css" href="/base-styling.css" />
+                <link rel="stylesheet" type="text/css" href="/game-list-style.css" />
             </head>
             <body>
-                <div id='react-app-here'></div>
-                <script src='/bundle.js'</script>
+                <div id='put-app-here'></div>
+                <script src='/bundle.js'></script>
             </body>
         </html>
     `);

@@ -1,3 +1,8 @@
-import axios from "axios"
+import React from "react";
+import ReactDOM from "react-dom/client";
+ 
+import App from "./components/App"
 
-console.log(axios)
+ReactDOM.createRoot(
+    document.querySelector("#put-app-here")
+).render(<App />);

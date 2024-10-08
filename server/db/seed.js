@@ -40,6 +40,5 @@ const runSeed = async() => {
     await bo3Game.setGenres([ fpsGenre ]);
 
     console.log("Seed is complete!");
-    process.kill(0);
 }
 runSeed();

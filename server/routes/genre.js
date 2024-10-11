@@ -8,33 +8,22 @@ const { Genre } = require('../db')
 // GET /genre
 // respond w HTML text to be rendered
 // show a form
-router.get("/", (req, res) => {
-    res.send (`
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>Add a new genre</title>
-                <link rel='stylesheet' type='text/css' href='/base-styling.css' />
-            </head>
-            <body>
-                <h1>Add a New Genre</h1>
-                <form method="POST" action="/genre">
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" name="name" />
-                        <button type="submit">Add Genre</button>
-                    </div>
-                </form>
-            </body>
-        </html>
-    `)
+router.get("/", async (req, res, next) => {
+    try {
+        const genres = await Genre.findAll({
+            order: [["name", "ASC"]]
+        })
+        res.json(genres);
+    } catch (e) {
+        next (e)
+    }
 })
 
 // POST /genre
 router.post("/", async (req, res, next) => {
     try {
-        await Genre.create({ name: req.body.name });
-        res.redirect('/genre');
+        const newGenre = await Genre.create({ name: req.body.name });
+        res.json(newGenre);
     } catch (e) {
         next(e);
     }

@@ -1,28 +1,19 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { thunk } from "redux-thunk";
 
-import { SET_GAMES } from "./games";
-
-const rootReducer = combineReducers({
-    games: (state = [], action) => { 
-
-        if (action.type === SET_GAMES) {
-            return action.gamesArray;
-        }
-
-        return state;
-    },
-    selectableGenres: (state = []) => {
-        return state;
-    },
-    randomGame: (state = null) => {
-        return state;
-    }
-});
+import gamesReducer from "./games";
 
 const storeObj = configureStore({
-    reducer: rootReducer
+    reducer: combineReducers({
+        games: gamesReducer,
+        selectableGenres: (state = []) => {
+            return state;
+        },
+        randomGame: (state = null) => {
+            return state;
+        }
+    }),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
 });
-
-window.storeObj = storeObj;
 
 export default storeObj;

@@ -3,6 +3,8 @@ import axios from "axios";
 
 import { connect } from "react-redux";
 
+import {fetchGamesFromServer} from "../store/games"
+
 class Game extends React.Component {
 
     render() {
@@ -25,6 +27,9 @@ class Game extends React.Component {
 }
 
 class GameList extends React.Component {
+    componentDidMount() {
+        this.props.fetchGames();
+    }
 
     render() {
 
@@ -54,7 +59,7 @@ const connector = connect(
     (dispatchToStore) => {
         return {
             fetchGames: async () => {
-                await 
+                dispatchToStore(fetchGamesFromServer());
             }
         }
     }

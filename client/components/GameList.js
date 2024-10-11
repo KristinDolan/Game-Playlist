@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 
+import { connect } from "react-redux";
+
 class Game extends React.Component {
 
     render() {
@@ -24,33 +26,16 @@ class Game extends React.Component {
 
 class GameList extends React.Component {
 
-    constructor() {
-        super();
-        this.state = {
-            fetchedGames: []
-        }
-    }
-
-    async componentDidMount() {
-        try {
-            const response = await axios.get("/games");
-            const ourGames = response.data;
-            this.setState({ fetchedGames: ourGames });
-        } catch (error) {
-            console.error("Error fetching games:", error);
-        }
-    }
-
     render() {
 
-        if (this.state.fetchedGames.length === 0) {
+        if (this.props.gamesFromState.length === 0) {
             return <h3>This will be a loading screen...</h3>
         }
 
         return (
             <div id="game-list">
                 <ul id="list-of-games">
-                    {this.state.fetchedGames.map(aGame => {
+                    {this.props.gamesFromState.map(aGame => {
                         return <Game key={aGame.id} theGame={aGame} />;
                     })}
                 </ul>
@@ -58,5 +43,23 @@ class GameList extends React.Component {
         )
     }
 }
+const connector = connect(
+    //Map store to props
+    (fullReduxState) => {
+        return {
+            gamesFromState: fullReduxState.games
+        }
+    },
+    //Map dispatch to props
+    (dispatchToStore) => {
+        return {
+            fetchGames: async () => {
+                await 
+            }
+        }
+    }
+)
 
-export default GameList;
+
+
+export default connector(GameList);

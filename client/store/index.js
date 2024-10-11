@@ -1,25 +1,11 @@
-/*
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-    {
-        games: array of game objects (rows in DB)
-        selectableGenres: array of genre objects (rows in DB)
-        randomGame ("What Should I Play?"): single game object
-        ~ unplayed games: array of game objects ~
-    }
+import { SET_GAMES } from "./games";
 
-    Canonical source of changing info in our app
-
-    Dispatch an action to the store:
-        store.dispatch({ type: SET_ALL_GAMES, games: gamesFromServer })
-
-*/
-
-import { configureStore, combineReducers } from "redux";
-
-const storeObj = configureStore(combineReducers({
+const rootReducer = combineReducers({
     games: (state = [], action) => { 
 
-        if (action.type === "SET_GAMES") {
+        if (action.type === SET_GAMES) {
             return action.gamesArray;
         }
 
@@ -31,8 +17,11 @@ const storeObj = configureStore(combineReducers({
     randomGame: (state = null) => {
         return state;
     }
-}))
+});
 
+const storeObj = configureStore({
+    reducer: rootReducer
+});
 
 window.storeObj = storeObj;
 

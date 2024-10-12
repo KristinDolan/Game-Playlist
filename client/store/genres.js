@@ -5,7 +5,7 @@ const SET_GENRES = "SET_GENRES";
 export const fetchGenresFromServer = () => {
     return async (dispatch) => {
         try {
-            const response = await axios.get("/genres");
+            const response = await axios.get("/genre");
             const genres = response.data;
             dispatch(setGenresActionCreator(genres))
         } catch (e) {
@@ -39,5 +39,5 @@ export default (state = [], action) => {
     if (action.type === SET_GENRES) {
         return action.genresToSet;
     }
-
+    return state;
 }

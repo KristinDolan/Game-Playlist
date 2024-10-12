@@ -1,6 +1,7 @@
 import React from "react";
 
 import GameList from "./GameList";
+import GenreForm from "./GenreForm";
 
 class App extends React.Component {
     render() {
@@ -12,7 +13,8 @@ class App extends React.Component {
                     <a>What Should I Play?</a><br/>
                     <a>Add New Game</a>
                 </nav>
-                <GameList />
+                {/* <GameList /> */}
+                <GenreForm />
             </div>
         )
     }
